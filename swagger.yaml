@@ -1,0 +1,447 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  description: Api documentation Online Shopping Car
+  version: 1.0.11
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Product Service Server
+  - url: http://localhost:8001/api/v1
+    description: Promo Service Server
+  - url: http://localhost:8002/api/v1
+    description: Cart Service Server
+tags:
+  - name: Online Shopping Car
+
+paths:
+  /product:
+    get:
+      tags:
+        - Product
+      summary: Get all product
+      description: Get all the products do we have
+      operationId: selectProduct
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Product"
+        "404":
+          description: Not found response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+        "500":
+          description: Internal Server Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+  /product/{productId}:
+    get:
+      tags:
+        - Product
+      summary: Detail product
+      description: Get detail the products do we have
+      operationId: selectDetailProduct
+      parameters:
+        - name: productId
+          in: path
+          description: ID of product to return
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/Product"
+        "404":
+          description: Not found response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+        "500":
+          description: Internal Server Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+  /promo:
+    get:
+      tags:
+        - Promo
+      summary: Get all promo
+      description: Get all the promo do we have
+      operationId: selectPromo
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Promo"
+        "404":
+          description: Not found response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+        "500":
+          description: Internal Server Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+  /promo/{promoCode}:
+    get:
+      tags:
+        - Promo
+      summary: Detail promo
+      description: Get detail the promo do we have
+      operationId: selectDetailPromo
+      parameters:
+        - name: promoCode
+          in: path
+          description: Code of promo to return
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/Promo"
+        "404":
+          description: Not found response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+        "500":
+          description: Internal Server Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+  /cart/{invoice}:
+    get:
+      tags:
+        - Cart
+      summary: Get cart and product
+      description: Get cart and product into cart
+      operationId: selectCartProduct
+      parameters:
+        - name: invoice
+          in: path
+          description: Code of promo to return
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Cart"
+        "404":
+          description: Not found response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+        "500":
+          description: Internal Server Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+    post:
+      tags:
+        - Cart
+      summary: Insert product into cart
+      description: Insert new product into cart
+      operationId: insertCartProduct
+      parameters:
+        - name: invoice
+          in: path
+          description: Invoice cart
+          required: true
+          schema:
+            type: string
+            format: string
+      requestBody:
+        description: Add new product in the store
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: string
+                quantity:
+                  type: number
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+        "400":
+          description: Bad request response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+        "500":
+          description: Internal Server Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+  /cart/{invoice}/{productId}:
+    delete:
+      tags:
+        - Cart
+      summary: Remove product in cart
+      description: Remove product into cart
+      operationId: removeCartProduct
+      parameters:
+        - name: invoice
+          in: path
+          description: Invoice cart
+          required: true
+          schema:
+            type: string
+            format: string
+        - name: productId
+          in: path
+          description: Product id to return
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+        "400":
+          description: Bad request response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+        "500":
+          description: Internal Server Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+    patch:
+      tags:
+        - Cart
+      summary: Update quantity product in cart
+      description: Update quantity product into cart
+      operationId: updateQuantityCartProduct
+      requestBody:
+        description: Update product quantity in the cart
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: number
+      parameters:
+        - name: invoice
+          in: path
+          description: Invoice cart
+          required: true
+          schema:
+            type: string
+            format: string
+        - name: productId
+          in: path
+          description: Product id to return
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+        "400":
+          description: Bad request response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+        "500":
+          description: Internal Server Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+  /cart/{invoice}/promo:
+    post:
+      tags:
+        - Cart
+      summary: Apply promo for transaction
+      description: Apply promo for transaction in cart
+      operationId: applyPromoCart
+      parameters:
+        - name: invoice
+          in: path
+          description: Invoice cart
+          required: true
+          schema:
+            type: string
+            format: string
+      requestBody:
+        description: Add new product in the store
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                promoCode:
+                  type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+        "400":
+          description: Bad request response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+        "500":
+          description: Internal Server Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meta"
+
+components:
+  schemas:
+    Promo:
+      type: object
+      properties:
+        secondaryId:
+          type: string
+        name:
+          type: string
+        discount:
+          type: number
+        code:
+          type: string
+    Meta:
+      type: object
+      properties:
+        message:
+          type: string
+    Product:
+      type: object
+      properties:
+        secondaryId:
+          type: string
+        sku:
+          type: string
+        string:
+          type: string
+        displayQuatity:
+          type: string
+        quatity:
+          type: number
+        price:
+          type: number
+        unit:
+          type: string
+    Cart:
+      type: object
+      properties:
+        secondaryId:
+          type: string
+        invoice:
+          type: string
+        price:
+          type: number
+        discountPrice:
+          type: number
+        finalPrice:
+          type: number
+        promoCode:
+          type: string
+        product:
+          type: array
+          items:
+            $ref: "#/components/schemas/CartProduct"
+    CartProduct:
+      type: object
+      properties:
+        secondaryId:
+          type: string
+        sku:
+          type: string
+        string:
+          type: string
+        displayQuatity:
+          type: string
+        quatity:
+          type: number
+        price:
+          type: number
+        totalPrice:
+          type: number
+        unit:
+          type: string

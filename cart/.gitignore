@@ -1,0 +1,9 @@
+logs
+temp
+
+__debug_bin.exe
+
+tmp
+
+go.sum
+go.work.sum

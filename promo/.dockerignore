@@ -1,0 +1,13 @@
+.env.*
+!.env.production
+
+.bash
+.vscode
+doc
+tmp
+
+.git
+README.md
+
+Dockerfile
+docker-compose.yaml

@@ -1,0 +1,36 @@
+version: '3.1'
+
+services:
+  db.product:
+    image: postgres
+    container_name : db.service-product
+    restart: always
+    ports:
+      - 5430:5432
+    networks: 
+      - networks-service-product
+    environment:
+      POSTGRES_USER : development-user
+      POSTGRES_PASSWORD: userpassword
+      POSTGRES_DB : service-product
+    volumes:
+     - product-data:/var/lib/postgresql/data
+  service-product:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      no_cache: true
+    restart: always
+    container_name : service-product
+    ports:
+      - 8000:8000
+    env_file:
+      - .env.production
+    networks: 
+      - networks-service-product
+
+networks:
+  networks-service-product:
+
+volumes:
+  product-data:

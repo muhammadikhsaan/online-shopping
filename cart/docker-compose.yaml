@@ -1,0 +1,40 @@
+version: '3.1'
+
+services:
+  db.cart:
+    image: postgres
+    container_name : db.service-cart
+    restart: always
+    ports:
+      - 5432:5432
+    networks: 
+      - networks-service-cart
+    environment:
+      POSTGRES_USER : development-user
+      POSTGRES_PASSWORD: userpassword
+      POSTGRES_DB : service-cart
+    volumes:
+     - cart-data:/var/lib/postgresql/data
+  service-cart:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      no_cache: true
+    restart: always
+    container_name : service-cart
+    ports:
+      - 8002:8002
+    env_file:
+      - .env.production
+    networks: 
+      - networks-service-cart
+      - networks-service-product
+      - networks-service-promo
+
+networks:
+  networks-service-product:
+  networks-service-cart:
+  networks-service-promo:
+
+volumes:
+  cart-data:

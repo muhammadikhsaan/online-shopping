@@ -1,0 +1,36 @@
+version: '3.1'
+
+services:
+  db.promo:
+    image: postgres
+    container_name : db.service-promo
+    restart: always
+    ports:
+      - 5431:5432
+    networks: 
+      - networks-service-promo
+    environment:
+      POSTGRES_USER : development-user
+      POSTGRES_PASSWORD: userpassword
+      POSTGRES_DB : service-promo
+    volumes:
+     - promo-data:/var/lib/postgresql/data
+  service-promo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      no_cache: true
+    restart: always
+    container_name : service-promo
+    ports:
+      - 8001:8001
+    env_file:
+      - .env.production
+    networks: 
+      - networks-service-promo
+
+networks:
+  networks-service-promo:
+
+volumes:
+  promo-data:

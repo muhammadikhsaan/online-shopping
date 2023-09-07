@@ -1,0 +1,96 @@
+version: '3.1'
+
+services:
+  db.cart:
+    image: postgres
+    container_name : db.service-cart
+    restart: always
+    ports:
+      - 5432:5432
+    networks: 
+      - networks-service-cart
+    environment:
+      POSTGRES_USER : development-user
+      POSTGRES_PASSWORD: userpassword
+      POSTGRES_DB : service-cart
+    volumes:
+     - cart-data:/var/lib/postgresql/data
+  service-cart:
+    build:
+      context: ./cart
+      dockerfile: Dockerfile
+      no_cache: true
+    restart: always
+    container_name : service-cart
+    ports:
+      - 8002:8002
+    env_file:
+      - ./cart/.env.production
+    networks: 
+      - networks-service-cart
+      - networks-service-product
+      - networks-service-promo
+  db.product:
+    image: postgres
+    container_name : db.service-product
+    restart: always
+    ports:
+      - 5430:5432
+    networks: 
+      - networks-service-product
+    environment:
+      POSTGRES_USER : development-user
+      POSTGRES_PASSWORD: userpassword
+      POSTGRES_DB : service-product
+    volumes:
+     - product-data:/var/lib/postgresql/data
+  service-product:
+    build:
+      context: ./product
+      dockerfile: Dockerfile
+      no_cache: true
+    restart: always
+    container_name : service-product
+    ports:
+      - 8000:8000
+    env_file:
+      - ./product/.env.production
+    networks: 
+      - networks-service-product
+  db.promo:
+    image: postgres
+    container_name : db.service-promo
+    restart: always
+    ports:
+      - 5431:5432
+    networks: 
+      - networks-service-promo
+    environment:
+      POSTGRES_USER : development-user
+      POSTGRES_PASSWORD: userpassword
+      POSTGRES_DB : service-promo
+    volumes:
+     - promo-data:/var/lib/postgresql/data
+  service-promo:
+    build:
+      context: ./promo
+      dockerfile: Dockerfile
+      no_cache: true
+    restart: always
+    container_name : service-promo
+    ports:
+      - 8001:8001
+    env_file:
+      - ./promo/.env.production
+    networks: 
+      - networks-service-promo
+
+networks:
+  networks-service-product:
+  networks-service-cart:
+  networks-service-promo:
+
+volumes:
+  product-data:
+  cart-data:
+  promo-data:
